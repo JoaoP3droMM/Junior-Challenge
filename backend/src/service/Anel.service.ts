@@ -22,7 +22,7 @@ export class AnelService {
     }
 
     const anel = AnelRepository.create(data)
-    return await AnelRepository.find()
+    return await AnelRepository.save(anel)
   }
 
   static async listarAneis() {
