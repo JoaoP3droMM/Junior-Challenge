@@ -1,22 +1,22 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity()
+@Entity("aneis") // Define o nome da tabela no banco
 export class Anel {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: "text" })
   nome: string;
 
-  @Column()
+  @Column({ type: "text" })
   poder: string;
 
-  @Column()
+  @Column({ type: "text" })
   portador: string;
 
-  @Column()
+  @Column({ type: "text" })
   forjadoPor: string;
 
-  @Column()
+  @Column({ type: "text" })
   imagem: string;
 }

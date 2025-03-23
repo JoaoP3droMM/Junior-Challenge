@@ -3,11 +3,15 @@ import { AnelService } from "../service/Anel.service"
 
 export class AnelController {
   static async criar(req: Request, res: Response) {
-    try {
+    try { 
       const anel = await AnelService.criarAnel(req.body)
       return res.status(201).json(anel)
     } catch (error) {
-      return res.status(400).json({ error: error.message })
+      // Garantindo que error só seja acessada se a mensagem for realmente um Error
+      if (error instanceof Error) {
+        return res.status(400).json({ error: error.message })
+      }
+      return res.status(401).json({ error: 'Ocorreu um erro desconhecido' })
     }
   }
 
