@@ -18,11 +18,13 @@ export class AnelService {
     const totalCriados = await AnelRepository.count({ where: { forjadoPor } })
 
     if (totalCriados >= limites[forjadoPor as Forjador]) {
-        throw new Error(`O limite de anéis para ${forjadoPor} foi atingido`)
+        throw new Error(`🚫 O limite de anéis para ${forjadoPor} foi atingido`)
     }
 
     const anel = AnelRepository.create(data)
-    return await AnelRepository.save(anel)
+    await AnelRepository.save(anel)
+
+    return { status: 'success', message: '✅ Anel criado com sucesso!', anel }
   }
 
   static async listarAneis() {
@@ -30,11 +32,27 @@ export class AnelService {
   }
 
   static async atualizarAnel(id: number, data: Partial<Anel>) {
+    const anel = await AnelRepository.findOne({ where: { id } })
+    
+    if (!anel) {
+      throw new Error(`⚠️ Nenhum anel encontrado com seu ID ${id}`)
+    }
+
     await AnelRepository.update(id, data)
-    return await AnelRepository.findOneBy({ id })
+    const anelAtualizado = await AnelRepository.findOne({ where: { id } })
+    
+    return { status: 'success', message: "🛠️ Anel atualizado com sucesso!", anel: anelAtualizado }
   }
 
   static async deletarAnel(id: number) {
+    const anel = await AnelRepository.findOne({ where: { id } })
+
+    if (!anel) {
+      throw new Error(`⚠️ Nenhum anel encontrado com seu ID ${id}`)
+    }
+
     await AnelRepository.delete(id)
+
+    return { status: 'success', message: `🗑️ Anel ID ${id} deletado com sucesso!` }
   }
 }

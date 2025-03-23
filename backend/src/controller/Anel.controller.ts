@@ -28,7 +28,7 @@ export class AnelController {
 
   static async deletar(req: Request, res: Response) {
     const { id } = req.params
-    await AnelService.deletarAnel(Number(id))
-    return res.status(204).send()
+    const resultado = await AnelService.deletarAnel(Number(id))
+    return res.status(200).json(resultado)
   }
 }
