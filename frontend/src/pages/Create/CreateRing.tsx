@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './CreateRing.css';
 import forjaImage from '../../assets/forja.webp';
 import { FaArrowLeft } from 'react-icons/fa';
-import { createRing } from '../../services/api.tsx'
+import { createRing, updateRing } from '../../services/api.tsx'
 
 interface RingForm {
   nome: string;

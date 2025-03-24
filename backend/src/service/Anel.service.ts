@@ -31,28 +31,40 @@ export class AnelService {
     return await AnelRepository.find()
   }
 
-  static async atualizarAnel(id: number, data: Partial<Anel>) {
-    const anel = await AnelRepository.findOne({ where: { id } })
+  static async atualizarAnel(nome: string, data: Partial<Anel>) {
+    const anel = await AnelRepository.findOne({ where: { nome } }); // Busca por nome
     
     if (!anel) {
-      throw new Error(`⚠️ Nenhum anel encontrado com seu ID ${id}`)
+      throw new Error(`⚠️ Nenhum anel encontrado com o nome ${nome}`);
     }
 
-    await AnelRepository.update(id, data)
-    const anelAtualizado = await AnelRepository.findOne({ where: { id } })
+    // Verifica se está tentando alterar o forjador
+    if (data.forjadoPor && data.forjadoPor !== anel.forjadoPor) {
+      throw new Error('Não é permitido alterar o forjador do anel');
+    }
+
+    await AnelRepository.update({ nome }, data);
+    const anelAtualizado = await AnelRepository.findOne({ where: { nome: data.nome || nome } });
     
-    return { status: 'success', message: "🛠️ Anel atualizado com sucesso!", anel: anelAtualizado }
+    return { 
+      status: 'success', 
+      message: "🛠️ Anel atualizado com sucesso!", 
+      anel: anelAtualizado 
+    }
   }
 
-  static async deletarAnel(id: number) {
-    const anel = await AnelRepository.findOne({ where: { id } })
+  static async deletarAnel(nome: string) {
+    const anel = await AnelRepository.findOne({ where: { nome } });
 
     if (!anel) {
-      throw new Error(`⚠️ Nenhum anel encontrado com seu ID ${id}`)
+      throw new Error(`⚠️ Nenhum anel encontrado com o nome ${nome}`);
     }
 
-    await AnelRepository.delete(id)
+    await AnelRepository.delete({ nome });
 
-    return { status: 'success', message: `🗑️ Anel ID ${id} deletado com sucesso!` }
+    return { 
+      status: 'success', 
+      message: `🗑️ Anel "${nome}" deletado com sucesso!` 
+    };
   }
 }

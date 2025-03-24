@@ -21,14 +21,28 @@ export class AnelController {
   }
 
   static async atualizar(req: Request, res: Response) {
-    const { id } = req.params
-    const anel = await AnelService.atualizarAnel(Number(id), req.body)
-    return res.json(anel)
+    const { nome } = req.params; // Alterado para nome
+    try {
+      const anel = await AnelService.atualizarAnel(nome, req.body); // Passa o nome
+      return res.json(anel);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ error: 'Erro interno' });
+    }
   }
 
   static async deletar(req: Request, res: Response) {
-    const { id } = req.params
-    const resultado = await AnelService.deletarAnel(Number(id))
-    return res.status(200).json(resultado)
+    const { nome } = req.params; // Alterado para nome
+    try {
+      const resultado = await AnelService.deletarAnel(nome); // Passa o nome
+      return res.status(200).json(resultado);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ error: 'Erro interno' });
+    }
   }
 }

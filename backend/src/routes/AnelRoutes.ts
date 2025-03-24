@@ -5,7 +5,7 @@ const router = Router()
 
 router.post('/aneis', AnelController.criar)
 router.get('/aneis', AnelController.listar)
-router.put('/aneis/:id', AnelController.atualizar)
-router.delete('/aneis/:id', AnelController.deletar)
+router.put('/aneis/:nome', AnelController.atualizar)
+router.delete('/aneis/:nome', AnelController.deletar)
 
 export default router
