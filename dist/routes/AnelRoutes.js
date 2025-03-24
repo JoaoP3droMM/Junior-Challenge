@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const Anel_controller_1 = require("../controller/Anel.controller");
+const router = (0, express_1.Router)();
+router.post('/aneis', Anel_controller_1.AnelController.criar);
+router.get('/aneis', Anel_controller_1.AnelController.listar);
+router.put('/aneis/:id', Anel_controller_1.AnelController.atualizar);
+router.delete('/aneis/:id', Anel_controller_1.AnelController.deletar);
+exports.default = router;
