@@ -1,0 +1,116 @@
+/* Camada 1 - Imagem de fundo */
+.carousel-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+  
+/* Camada 2 - Overlay */
+.carousel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5)
+}
+  
+  .carousel-slide {
+    position: relative;  /* Para que o conteúdo posicionado absolutamente se alinhe ao slide */
+    width: 100vw;        /* Ocupa toda a largura da tela */
+    height: 100vh;       /* Ocupa toda a altura da tela */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    text-align: left;    /* O conteúdo será alinhado à esquerda */
+  }
+  
+  /* Estilo do conteúdo */
+  .carousel-content {
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: left;
+    color: #fff;
+  }
+  
+  .carousel-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #f5d742;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-family: "Dancing Script", cursive;
+  }
+  
+  .carousel-content p {
+    font-size: 1.8rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-family: "Dancing Script", cursive;
+  }
+  
+  .carousel-content .last-holder {
+    font-style: italic;
+    font-size: 1.6rem;
+    color: #ccc;
+    margin-top: 2rem;
+  }
+  
+  /* Estilo dos dots (indicadores) */
+  .slick-dots {
+    bottom: 30px;
+    z-index: 4;
+  }
+  
+  .slick-dots li button:before {
+    color: white;
+    font-size: 12px;
+    opacity: 0.7;
+  }
+  
+  .slick-dots li.slick-active button:before {
+    color: #f5d742;
+    opacity: 1;
+  }
+  
+  /* Estilização dos botões de navegação */
+  .slick-prev, .slick-next {
+    z-index: 5;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Posição dos botões */
+  .slick-prev {
+    left: 20px;
+  }
+  .slick-next {
+    right: 20px;
+  }
+  
+  /* Efeito hover */
+  .slick-prev:hover, .slick-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .slick-list,
+.slick-track,
+.slick-slide {
+  margin: 0;
+  padding: 0;
+}
+  

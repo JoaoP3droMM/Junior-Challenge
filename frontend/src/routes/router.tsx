@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Welcome from "../pages/Welcome/Welcome"
+import RingCarousel from '../components/RingCarrossel/RingCarousel'
 
 const AppRoutes = () => {
   return (
@@ -8,6 +9,7 @@ const AppRoutes = () => {
         {/* Redireciona a rota raiz para a tela de boas-vindas */}
         <Route path="/" element={<Navigate to="/welcome" replace />} />
         <Route path="/welcome" element={<Welcome />} />
+        <Route path="/aneis" element={<RingCarousel />} />
       </Routes>
     </Router>
   );
