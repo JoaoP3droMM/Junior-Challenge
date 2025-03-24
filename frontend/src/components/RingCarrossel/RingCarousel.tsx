@@ -17,12 +17,16 @@ const RingCarousel: React.FC = () => {
   const navigate = useNavigate()
   const [rings, setRings] = useState<Ring[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
 
   useEffect(() => {
     const loadRings = async () => {
       try {
         const apiRings = await fetchRings()
+
+        if (apiRings.length === 0) {
+          navigate("/create")
+          return
+        }
 
         // Mapear os dados da API para a estrutura do componente
         const mappedRings = apiRings.map((ring: any) => ({
@@ -33,13 +37,13 @@ const RingCarousel: React.FC = () => {
 
         setRings(mappedRings)
       } catch (error) {
-        setError('Erro ao carregais os anéis do servidor')
+        console.error("Erro ao carregar anéis:", error)
       } finally {
         setLoading(false)
       }
     }
     loadRings()
-  }, [])
+  }, [navigate])
 
   useEffect(() => {
     const handleScroll = (event: WheelEvent) => {
@@ -67,11 +71,7 @@ const RingCarousel: React.FC = () => {
   if (loading) {
     return <div className="loading-message">Carregando anéis...</div>;
   }
-
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
-
+  
   return (
     <>
       <div className="carousel-background" style={{ backgroundImage: `url(${anelImage})` }} />
