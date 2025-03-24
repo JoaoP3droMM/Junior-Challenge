@@ -8,7 +8,7 @@ import fs from 'fs'
 
 const app = express()
 
-const ringImagesPath = path.join(__dirname, '../../ringImages')
+const ringImagesPath = path.resolve(__dirname, '../..', 'ringImages')
 
 // Cria o diretório se não existir
 if (!fs.existsSync(ringImagesPath)) {
@@ -32,7 +32,7 @@ app.use(express.json())
 
 app.use('/api', anelRoutes)
 
-app.use('/ring-images', express.static(ringImagesPath));
+app.use('/ring-images', express.static(ringImagesPath))
 
 AppDataSource.initialize()
     .then(() => {

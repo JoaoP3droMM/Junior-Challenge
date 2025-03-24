@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import path from 'path'
 import fs from 'fs'
 
-const ringImagesPath = path.join(__dirname, '../../../ringImages')
+const ringImagesPath = path.resolve(__dirname, '..', '..', 'ringImages')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
