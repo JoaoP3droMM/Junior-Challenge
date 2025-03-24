@@ -105,7 +105,7 @@ const CreateRing: React.FC = () => {
       </div>
 
       <div className="form-container">
-        <h2>Gerenciamento de Anéis</h2>
+        <h2>Forja de Anéis</h2>
         <form>
           <div className="form-row">
             <label htmlFor="nome">Nome do anel:</label>

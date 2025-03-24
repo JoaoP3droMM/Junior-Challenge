@@ -24,10 +24,10 @@ export const createRing = async (ring: Ring) => {
 };
 
 // Atualize as outras funções para usar a instância configurada
-export const fetchRing = async (nome: string) => {
-  const response = await api.get(`/${encodeURIComponent(nome)}`)
-  return response.data
-}
+export const fetchRings = async () => {
+  const response = await api.get('');
+  return response.data;
+};
 
 export const updateRing = async (nomeOriginal: string, updates: Partial<Ring>) => {
   const response = await api.put(`/${encodeURIComponent(nomeOriginal)}`, updates);

@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./RingCarousel.css";
 import anelImage from "../../assets/anel.webp";
+import { fetchRings } from "../../services/api";
 
 interface Ring {
   title: string;
@@ -12,27 +13,33 @@ interface Ring {
   lastHolder: string;
 }
 
-const rings: Ring[] = [
-  {
-    title: "Anel 1",
-    description: "Forjado por Sauron, garante ao portador o poder da invisibilidade",
-    lastHolder: "Frodo Bolseiro"
-  },
-  {
-    title: "Anel 2",
-    description: "Forjado por Sauron, garante ao portador o poder da invisibilidade",
-    lastHolder: "Frodo Bolseiro"
-  },
-  {
-    title: "Anel 3",
-    description: "Forjado por Sauron, garante ao portador o poder da invisibilidade",
-    lastHolder: "Frodo Bolseiro"
-  }
-  // ... outros anéis
-];
-
 const RingCarousel: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const [rings, setRings] = useState<Ring[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    const loadRings = async () => {
+      try {
+        const apiRings = await fetchRings()
+
+        // Mapear os dados da API para a estrutura do componente
+        const mappedRings = apiRings.map((ring: any) => ({
+          title: ring.nome,
+          description: `Forjado por ${ring.forjadoPor || 'desconhecido'}, concede o poder de: ${ring.poder || 'poder não especificado'}`, 
+          lastHolder: ring.portador || 'portador desconhecido'
+        }))
+
+        setRings(mappedRings)
+      } catch (error) {
+        setError('Erro ao carregais os anéis do servidor')
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadRings()
+  }, [])
 
   useEffect(() => {
     const handleScroll = (event: WheelEvent) => {
@@ -45,7 +52,7 @@ const RingCarousel: React.FC = () => {
     return () => {
       window.removeEventListener("wheel", handleScroll);
     };
-  }, [navigate]);
+  }, [navigate])
 
   const settings: Settings = {
     dots: true,
@@ -55,17 +62,22 @@ const RingCarousel: React.FC = () => {
     slidesToScroll: 1,
     arrows: false,
     fade: true
-  };
+  }
+
+  if (loading) {
+    return <div className="loading-message">Carregando anéis...</div>;
+  }
+
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
 
   return (
     <>
-      {/* Imagem de fundo - Camada 1 */}
       <div className="carousel-background" style={{ backgroundImage: `url(${anelImage})` }} />
       
-      {/* Overlay - Camada 2 */}
       <div className="carousel-overlay" />
       
-      {/* Conteúdo do Carrossel - Camada 3 */}
       <Slider {...settings}>
         {rings.map((ring, index) => (
           <div key={index} className="carousel-slide">
@@ -73,14 +85,14 @@ const RingCarousel: React.FC = () => {
               <h2>{ring.title}</h2>
               <p>{ring.description}</p>
               <p className="last-holder">
-                Os últimos registros indicam que o último portador foi: {ring.lastHolder}
+                Último portador registrado: {ring.lastHolder}
               </p>
             </div>
           </div>
         ))}
       </Slider>
     </>
-  );
-};
+  )
+}
 
 export default RingCarousel
