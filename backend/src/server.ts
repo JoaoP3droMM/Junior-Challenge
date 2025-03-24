@@ -3,8 +3,17 @@ import express from 'express'
 import cors from 'cors'
 import { AppDataSource } from './ormconfig'
 import anelRoutes from './routes/AnelRoutes'
+import path from 'path'
+import fs from 'fs'
 
 const app = express()
+
+const ringImagesPath = path.join(__dirname, '../../ringImages')
+
+// Cria o diretório se não existir
+if (!fs.existsSync(ringImagesPath)) {
+    fs.mkdirSync(ringImagesPath, { recursive: true })
+}
 
 // Configurando CORS
 app.use(cors({
@@ -22,6 +31,8 @@ app.use((req, res, next) => {
 app.use(express.json())
 
 app.use('/api', anelRoutes)
+
+app.use('/ring-images', express.static(ringImagesPath));
 
 AppDataSource.initialize()
     .then(() => {

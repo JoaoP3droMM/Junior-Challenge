@@ -8,6 +8,40 @@
     background-size: cover;
     background-position: center;
 }
+
+/* ************************************************************************** */
+
+/* Botão de Forja */
+.forge-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #ff6b35;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.forge-button:hover {
+  background-color: #ff5500;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.forge-button svg {
+  font-size: 20px;
+}
+
+/* ************************************************************************** */
   
 /* Camada 2 - Overlay */
 .carousel-overlay {
@@ -18,42 +52,44 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.5)
 }
+
+/* ************************************************************************** */
   
-  .carousel-slide {
-    position: relative;  /* Para que o conteúdo posicionado absolutamente se alinhe ao slide */
-    width: 100vw;        /* Ocupa toda a largura da tela */
-    height: 100vh;       /* Ocupa toda a altura da tela */
+.carousel-slide {
+    position: relative;
+    width: 100vw;       
+    height: 100vh;     
     display: flex !important;
     align-items: center;
     justify-content: center;
-    text-align: left;    /* O conteúdo será alinhado à esquerda */
-  }
-  
-  /* Estilo do conteúdo */
-  .carousel-content {
-    position: absolute;
-    left: 5%;
-    top: 50%;
-    transform: translateY(-50%);
     text-align: left;
-    color: #fff;
-  }
+}
   
-  .carousel-content h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    color: #f5d742;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-family: "Dancing Script", cursive;
-  }
+/* Estilo do conteúdo */
+.carousel-content {
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: left;
+  color: #fff;
+}
   
-  .carousel-content p {
-    font-size: 1.8rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-    font-family: "Dancing Script", cursive;
-  }
+.carousel-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #f5d742;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-family: "Dancing Script", cursive;
+}
+  
+.carousel-content p {
+  font-size: 1.8rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-family: "Dancing Script", cursive;
+}
   
   .carousel-content .last-holder {
     font-style: italic;
@@ -151,4 +187,7 @@
   font-style: italic;
   color: #ffd700;
 }
+
+/* Estilo do botão Forja */
+
   

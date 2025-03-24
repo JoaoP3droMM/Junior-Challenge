@@ -96,7 +96,7 @@ const CreateRing: React.FC = () => {
       <div className="carousel-overlay" />
 
       <div className="top-buttons">
-        <button className="back-button" onClick={() => navigate('/')}>
+        <button className="back-button" onClick={() => navigate('/aneis')}>
           <FaArrowLeft /> Voltar
         </button>
         <button className="delete-button" onClick={handleDelete}>

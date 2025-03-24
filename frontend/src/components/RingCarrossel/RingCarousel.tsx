@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Slider, { Settings } from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./RingCarousel.css";
-import anelImage from "../../assets/anel.webp";
-import { fetchRings } from "../../services/api";
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import Slider, { Settings } from "react-slick"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
+
+// CSS Images e Ícones
+import "./RingCarousel.css"
+import anelImage from "../../assets/anel.webp"
+import { FaFire } from 'react-icons/fa'
+
+// Services
+import { fetchRings } from "../../services/api"
 
 interface Ring {
-  title: string;
-  description: string;
-  lastHolder: string;
+  title: string
+  description: string
+  lastHolder: string
 }
 
 const RingCarousel: React.FC = () => {
@@ -45,19 +50,6 @@ const RingCarousel: React.FC = () => {
     loadRings()
   }, [navigate])
 
-  useEffect(() => {
-    const handleScroll = (event: WheelEvent) => {
-      if (event.deltaY > 0) {
-        navigate("/create");
-      }
-    };
-    
-    window.addEventListener("wheel", handleScroll);
-    return () => {
-      window.removeEventListener("wheel", handleScroll);
-    };
-  }, [navigate])
-
   const settings: Settings = {
     dots: true,
     infinite: true,
@@ -69,12 +61,20 @@ const RingCarousel: React.FC = () => {
   }
 
   if (loading) {
-    return <div className="loading-message">Carregando anéis...</div>;
+    return <div className="loading-message">Carregando anéis...</div>
   }
-  
+
   return (
     <>
       <div className="carousel-background" style={{ backgroundImage: `url(${anelImage})` }} />
+
+      {/* Botão de Forja */}
+      <button 
+        className="forge-button"
+        onClick={() => navigate("/create")}
+      >
+        <FaFire /> Forjar Novo Anel
+      </button>
       
       <div className="carousel-overlay" />
       

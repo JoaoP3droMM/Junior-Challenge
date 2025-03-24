@@ -17,6 +17,6 @@ export class Anel {
   @Column({ type: "text" })
   forjadoPor: string;
 
-  @Column({ type: "text" })
+  @Column({ nullable: true })
   imagem: string;
 }

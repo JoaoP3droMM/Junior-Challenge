@@ -1,5 +1,39 @@
 import { AnelRepository } from "../model/Anel.model"
 import { Anel } from "../entities/Anel"
+import multer from 'multer';
+import { v4 as uuidv4 } from 'uuid'
+import path from 'path'
+import fs from 'fs'
+
+const ringImagesPath = path.join(__dirname, '../../../ringImages')
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, ringImagesPath);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${uuidv4()}${ext}`);
+  }
+})
+
+const fileFilter = (req: any, file: any, cb: any) => {
+  const allowedTypes = /jpeg|jpg|png|webp/;
+  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = allowedTypes.test(file.mimetype);
+
+  if (extname && mimetype) {
+    cb(null, true);
+  } else {
+    cb(new Error('⚠️ Apenas imagens são permitidas (jpeg, jpg, png, webp)'));
+  }
+}
+
+export const upload = multer({ 
+  storage,
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+})
 
 const limites = { Elfos: 3, Anões: 7, Homens: 9, Sauron: 1 } as const
 
@@ -59,6 +93,14 @@ export class AnelService {
     if (!anel) {
       throw new Error(`⚠️ Nenhum anel encontrado com o nome ${nome}`);
     }
+
+    // Deletar imagem associada
+    if (anel.imagem) {
+      const imagePath = path.join(ringImagesPath, path.basename(anel.imagem));
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }    
 
     await AnelRepository.delete({ nome });
 

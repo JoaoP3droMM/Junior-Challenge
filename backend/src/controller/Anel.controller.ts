@@ -1,11 +1,22 @@
 import { Request, Response } from "express"
 import { AnelService } from "../service/Anel.service"
+import { upload } from '../service/Anel.service';
 
 export class AnelController {
   static async criar(req: Request, res: Response) {
     try { 
-      const anel = await AnelService.criarAnel(req.body)
-      return res.status(201).json(anel)
+      // Processar upload antes de criar o anel
+      upload.single('imagem')(req, res, async (err) => {
+        if (err) {
+          return res.status(400).json({ error: err.message });
+        }
+
+        const imagePath = req.file ? `/ring-images/${req.file.filename}` : '';
+        const anelData = { ...req.body, imagem: imagePath };
+
+        const anel = await AnelService.criarAnel(anelData)
+        return res.status(201).json(anel)
+      })
     } catch (error) {
       // Garantindo que error só seja acessada se a mensagem for realmente um Error
       if (error instanceof Error) {

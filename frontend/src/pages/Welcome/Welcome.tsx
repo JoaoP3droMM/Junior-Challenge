@@ -1,5 +1,5 @@
 import "./welcome.css"
-import welcomeImage from "../../assets/welcome.jpeg"
+import welcomeImage from "../../assets/welcome.webp"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 
@@ -31,7 +31,7 @@ const Welcome = () => {
       <img src={welcomeImage} alt="Bem vindo" className="background-image" />
       <div className="overlay"></div>
       <div className="welcome-container">
-        <h1 className="welcome-text">Bem vindo, ao gerenciador de anéis</h1>
+        <h1 className="welcome-text">A jornada começa aqui, mestre dos anéis. Forje, transforme e controle o poder!</h1>
       </div>
     </div>
   )
