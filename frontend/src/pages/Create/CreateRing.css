@@ -1,0 +1,93 @@
+/* ===== Formulário ===== */
+.form-container {
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);   
+    width: 60rem;
+    max-width: 90%;
+    background-color: #f4e2ac; /* Cor de “pergaminho” */
+    border: 2px solid #8b6d29; /* Bordas escuras p/ dar contraste */
+    border-radius: 8px;
+    padding: 20px 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Título do formulário */
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    color: #5c3b07;
+  }
+  
+  /* Labels e inputs */
+  .form-container label {
+    display: block;
+    margin: 0.8rem 0 0.3rem 0;
+    font-weight: bold;
+    color: #5c3b07;
+  }
+  
+  .form-container input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #5c3b07;
+  }
+
+  .form-row {
+    display: flex;          /* Ativa o flex container */
+    align-items: center;    /* Alinha verticalmente ao centro */
+    margin-bottom: 1rem;    /* Espaço entre os campos */
+  }
+  
+  /* Ajuste o label com uma largura fixa ou flex */
+  .form-row label {
+    width: 150px;           /* Exemplo de largura fixa para o label */
+    margin-right: 1rem;     /* Espaço entre label e input */
+    font-weight: bold;
+    color: #5c3b07;
+  }
+  
+  /* O input pode ocupar o restante do espaço */
+  .form-row input {
+    flex: 1;                /* Faz o input crescer e preencher o resto */
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #5c3b07;
+    color: #fff;            /* Se quiser texto claro no fundo escuro */
+  }
+  
+  /* Botões */
+  .form-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1.5rem;
+  }
+  
+  .form-buttons button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #5c3b07;
+    transition: color 0.3s;
+  }
+  
+  .form-buttons button:hover {
+    color: #e6b800; /* Dourado no hover */
+  }
+  
+  /* Botões específicos (se quiser estilos diferentes) */
+  .create-btn {
+    font-weight: bold;
+  }
+  
+  .update-btn {
+    font-style: italic;
+  }
