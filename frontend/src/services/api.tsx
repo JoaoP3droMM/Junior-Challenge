@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_URL = '/api/aneis';
+const API_URL = '/api/aneis'
 
 // Configure uma instância Axios global
 const api = axios.create({
@@ -12,9 +12,9 @@ const api = axios.create({
 
 export interface Ring {
   nome: string;
-  poder: string;
-  portador: string;
-  forjadoPor: string;
+  poder?: string;
+  portador?: string;
+  forjadoPor?: string;
   imagem?: string;
 }
 
@@ -24,16 +24,16 @@ export const createRing = async (ring: Ring) => {
 };
 
 // Atualize as outras funções para usar a instância configurada
-export const fetchRings = async () => {
-  const response = await api.get('');
-  return response.data;
-};
+export const fetchRing = async (nome: string) => {
+  const response = await api.get(`/${encodeURIComponent(nome)}`)
+  return response.data
+}
 
-export const updateRing = async (id: string, ring: Ring) => {
-  const response = await api.put(`/${id}`, ring);
+export const updateRing = async (nomeOriginal: string, updates: Partial<Ring>) => {
+  const response = await api.put(`/${encodeURIComponent(nomeOriginal)}`, updates);
   return response.data;
-};
+}
 
-export const deleteRing = async (id: string) => {
-  await api.delete(`/${id}`);
+export const deleteRing = async (nome: string) => {
+  await api.delete(`/${encodeURIComponent(nome)}`)
 }
