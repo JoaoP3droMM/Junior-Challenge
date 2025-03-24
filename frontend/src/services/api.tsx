@@ -5,10 +5,7 @@ const API_URL = '/api/aneis'
 // Configure uma instância Axios global
 const api = axios.create({
   baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  }
-})
+});
 
 export interface Ring {
   nome: string;
@@ -18,8 +15,12 @@ export interface Ring {
   imagem?: string;
 }
 
-export const createRing = async (ring: Ring) => {
-  const response = await api.post('', ring);
+export const createRing = async (formData: FormData) => {
+  const response = await api.post('', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
   return response.data;
 };
 
@@ -29,7 +30,18 @@ export const fetchRings = async () => {
   return response.data;
 };
 
-export const updateRing = async (nomeOriginal: string, updates: Partial<Ring>) => {
+export async function updateRing(nomeOriginal: string, updates: Partial<Ring>): Promise<any>;
+export async function updateRing(nomeOriginal: string, updates: FormData): Promise<any>;
+export async function updateRing(nomeOriginal: string, updates: any) {
+  if (updates instanceof FormData) {
+    const response = await api.put(`/${encodeURIComponent(nomeOriginal)}`, updates, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  }
+  
   const response = await api.put(`/${encodeURIComponent(nomeOriginal)}`, updates);
   return response.data;
 }

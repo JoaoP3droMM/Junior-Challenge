@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CreateRing.css';
 import forjaImage from '../../assets/forja.webp';
-import { FaArrowLeft, FaTrash } from 'react-icons/fa';
+import { FaArrowLeft, FaTrash, FaUpload } from 'react-icons/fa';
 import { createRing, updateRing, deleteRing } from '../../services/api';
 
 interface RingForm {
@@ -15,30 +15,52 @@ interface RingForm {
 
 const CreateRing: React.FC = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<RingForm>({
+  const [formValues, setFormValues] = useState<RingForm>({
     nome: '',
     poder: '',
     portador: '',
     forjadoPor: '',
     imagem: ''
   });
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [id]: value
-    }));
+    setFormValues(prev => ({ ...prev, [id]: value }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
   };
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (!formData.nome) {
+      if (!formValues.nome) {
         alert('Nome do anel é obrigatório!');
         return;
       }
+
+      const formData = new FormData();
+      formData.append('nome', formValues.nome);
+      formData.append('poder', formValues.poder || '');
+      formData.append('portador', formValues.portador || '');
+      formData.append('forjadoPor', formValues.forjadoPor || '');
       
+      if (selectedImage) {
+        formData.append('imagem', selectedImage);
+      }
+
       await createRing(formData);
       alert('Anel criado com sucesso!');
       navigate('/');
@@ -51,19 +73,28 @@ const CreateRing: React.FC = () => {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (!formData.nome) {
+      if (!formValues.nome) {
         alert('Nome do anel é obrigatório para atualização!');
         return;
       }
 
-      // Filtra apenas os campos modificados (não vazios)
       const updatePayload: Partial<RingForm> = {};
-      if (formData.poder) updatePayload.poder = formData.poder;
-      if (formData.portador) updatePayload.portador = formData.portador;
-      if (formData.forjadoPor) updatePayload.forjadoPor = formData.forjadoPor;
-      if (formData.imagem) updatePayload.imagem = formData.imagem;
+      if (formValues.poder) updatePayload.poder = formValues.poder;
+      if (formValues.portador) updatePayload.portador = formValues.portador;
+      if (formValues.forjadoPor) updatePayload.forjadoPor = formValues.forjadoPor;
+      
+      // Se houver nova imagem, enviar via FormData
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append('imagem', selectedImage);
+        Object.entries(updatePayload).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        await updateRing(formValues.nome, formData);
+      } else {
+        await updateRing(formValues.nome, updatePayload);
+      }
 
-      await updateRing(formData.nome, updatePayload);
       alert('Anel atualizado com sucesso!');
       navigate('/');
     } catch (error) {
@@ -73,14 +104,14 @@ const CreateRing: React.FC = () => {
   };
 
   const handleDelete = async () => {
-    if (!formData.nome) {
+    if (!formValues.nome) {
       alert('Digite o nome do anel que deseja deletar!');
       return;
     }
 
-    if (window.confirm(`Tem certeza que deseja deletar o anel "${formData.nome}"?`)) {
+    if (window.confirm(`Tem certeza que deseja deletar o anel "${formValues.nome}"?`)) {
       try {
-        await deleteRing(formData.nome);
+        await deleteRing(formValues.nome);
         alert('Anel deletado com sucesso!');
         navigate('/');
       } catch (error) {
@@ -112,7 +143,7 @@ const CreateRing: React.FC = () => {
             <input
               type="text"
               id="nome"
-              value={formData.nome}
+              value={formValues.nome}
               onChange={handleInputChange}
               required
             />
@@ -123,7 +154,7 @@ const CreateRing: React.FC = () => {
             <input
               type="text"
               id="poder"
-              value={formData.poder || ''}
+              value={formValues.poder || ''}
               onChange={handleInputChange}
             />
           </div>
@@ -133,7 +164,7 @@ const CreateRing: React.FC = () => {
             <input
               type="text"
               id="portador"
-              value={formData.portador || ''}
+              value={formValues.portador || ''}
               onChange={handleInputChange}
             />
           </div>
@@ -143,19 +174,44 @@ const CreateRing: React.FC = () => {
             <input
               type="text"
               id="forjadoPor"
-              value={formData.forjadoPor || ''}
+              value={formValues.forjadoPor || ''}
               onChange={handleInputChange}
             />
           </div>
 
           <div className="form-row">
-            <label htmlFor="imagem">Imagem:</label>
-            <input
-              type="text"
-              id="imagem"
-              value={formData.imagem || ''}
-              onChange={handleInputChange}
-            />
+            <label>Imagem:</label>
+            <div className="image-upload-container">
+              <button
+                type="button"
+                className="upload-button"
+                onClick={triggerFileInput}
+              >
+                <FaUpload /> Selecionar Imagem
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                accept="image/*"
+                hidden
+              />
+              {preview && (
+                <div className="image-preview">
+                  <img src={preview} alt="Pré-visualização" />
+                  <button
+                    type="button"
+                    className="remove-image"
+                    onClick={() => {
+                      setSelectedImage(null);
+                      setPreview(null);
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="form-buttons">
