@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CreateRing.css';
 import forjaImage from '../../assets/forja.webp';
-import { FaArrowLeft } from 'react-icons/fa';
-import { createRing, updateRing } from '../../services/api';
+import { FaArrowLeft, FaTrash } from 'react-icons/fa';
+import { createRing, updateRing, deleteRing } from '../../services/api';
 
 interface RingForm {
   nome: string;
@@ -72,14 +72,37 @@ const CreateRing: React.FC = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!formData.nome) {
+      alert('Digite o nome do anel que deseja deletar!');
+      return;
+    }
+
+    if (window.confirm(`Tem certeza que deseja deletar o anel "${formData.nome}"?`)) {
+      try {
+        await deleteRing(formData.nome);
+        alert('Anel deletado com sucesso!');
+        navigate('/');
+      } catch (error) {
+        console.error('Erro ao deletar anel:', error);
+        alert(error instanceof Error ? error.message : 'Erro desconhecido');
+      }
+    }
+  };
+
   return (
     <>
       <div className="carousel-background" style={{ backgroundImage: `url(${forjaImage})` }} />
       <div className="carousel-overlay" />
 
-      <button className="back-button" onClick={() => navigate('/')}>
-        <FaArrowLeft /> Voltar
-      </button>
+      <div className="top-buttons">
+        <button className="back-button" onClick={() => navigate('/')}>
+          <FaArrowLeft /> Voltar
+        </button>
+        <button className="delete-button" onClick={handleDelete}>
+          <FaTrash /> Deletar
+        </button>
+      </div>
 
       <div className="form-container">
         <h2>Gerenciamento de Anéis</h2>
@@ -102,7 +125,6 @@ const CreateRing: React.FC = () => {
               id="poder"
               value={formData.poder || ''}
               onChange={handleInputChange}
-              placeholder="Deixe vazio para manter o atual"
             />
           </div>
 
@@ -113,7 +135,6 @@ const CreateRing: React.FC = () => {
               id="portador"
               value={formData.portador || ''}
               onChange={handleInputChange}
-              placeholder="Deixe vazio para manter o atual"
             />
           </div>
 
@@ -124,7 +145,6 @@ const CreateRing: React.FC = () => {
               id="forjadoPor"
               value={formData.forjadoPor || ''}
               onChange={handleInputChange}
-              placeholder="Deixe vazio para manter o atual"
             />
           </div>
 
@@ -135,7 +155,6 @@ const CreateRing: React.FC = () => {
               id="imagem"
               value={formData.imagem || ''}
               onChange={handleInputChange}
-              placeholder="Deixe vazio para manter o atual"
             />
           </div>
 
