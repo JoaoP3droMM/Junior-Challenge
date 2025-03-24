@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Welcome from "../pages/Welcome/Welcome.tsx"
 import RingCarousel from '../components/RingCarrossel/RingCarousel.tsx'
-import CreateRing from '../pages/Create/CreateRing'
+import CreateRing from '../pages/Create/CreateRing.tsx'
 
 const AppRoutes = () => {
   return (
